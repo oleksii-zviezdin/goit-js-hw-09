@@ -9,6 +9,8 @@ stopBtnEl.setAttribute(`disabled`, `true`);
 startBtnEl.addEventListener(`click`, handleStartBtnEl);
 stopBtnEl.addEventListener(`click`, handleStoptBtnEl);
 
+let timerId = undefined;
+
 function handleStartBtnEl(event) {
     startBtnEl.setAttribute(`disabled`, `true`);
     stopBtnEl.removeAttribute(`disabled`);
