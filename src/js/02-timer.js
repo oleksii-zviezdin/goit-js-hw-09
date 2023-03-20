@@ -21,24 +21,60 @@ const daysEl = document.querySelector(`span[data-days]`);
 const hoursEl = document.querySelector(`span[data-hours]`);
 const minutesEl = document.querySelector(`span[data-minutes]`);
 const secondsEl = document.querySelector(`span[data-seconds]`);
+
+const inputPickerEl = document.querySelector(`#datetime-picker`);
 startBtnEl.setAttribute(`disabled`, ``);
-console.log(startBtnEl);
-console.log(daysEl);
-console.log(hoursEl);
-console.log(minutesEl);
-console.log(secondsEl);
 
 const options = {
-    enableTime: true,
-    time_24hr: true,
-    defaultDate: new Date(),
-    minuteIncrement: 1,
-    onClose(selectedDates) {
-    console.log(selectedDates[0]);
-    },
+  defaultHour: 12,
+  enableTime: true,
+  time_24hr: true,
+  defaultDate: new Date(),
+  minuteIncrement: 1,
+  isActive: false,
+  onClose(selectedDates) {
+    if (selectedDates[0] < options.defaultDate) {
+      Notiflix.Notify.failure('Please choose a date in the future');
+      console.log(startBtnEl);
+    } else {
+      startBtnEl.removeAttribute(`disabled`, ``);
+      Notiflix.Notify.success('Click on "START" button');
+      console.log(selectedDates[0]);
+    }
+  },
 };
 
-console.log(options.defaultDate);
+startBtnEl.addEventListener(`click`, startTimet);
+
+let timerId = null;
+
+function startTimet() {
+  if (options.isActive) {
+    return;
+  }
+  options.isActive = true;
+  const timerId = setInterval(() => {
+    const currentTime = new Date();
+    const finishTime = new Date(inputPickerEl.value)
+    time = finishTime - currentTime;
+    console.log(convertMs(time));
+    const { days, hours, minutes, seconds } = convertMs(time);
+
+    if (time >= 0) {        
+    daysEl.textContent = addLeadingZero(days);
+    hoursEl.textContent = addLeadingZero(hours);
+    minutesEl.textContent = addLeadingZero(minutes);
+    secondsEl.textContent = addLeadingZero(seconds);
+    }
+    else {
+      clearInterval(timerId);
+    }
+  }, 1000);    
+}
+
+function addLeadingZero(value){
+  return value.toString().padStart(2, `0`);
+}
 
 function convertMs(ms) {
   // Number of milliseconds per unit of time
@@ -59,14 +95,4 @@ function convertMs(ms) {
     return { days, hours, minutes, seconds };
 }
 
-console.log(convertMs(2000)); // {days: 0, hours: 0, minutes: 0, seconds: 2}
-console.log(convertMs(140000)); // {days: 0, hours: 0, minutes: 2, seconds: 20}
-console.log(convertMs(24140000)); // {days: 0, hours: 6 minutes: 42, seconds: 20}
-
 flatpickr("#datetime-picker", options);
-console.dir(flatpickr)
-
-
-Notiflix.Notify.success('Sol lucet omnibus');
-
-Notiflix.Notify.warning('Memento te hominem esse');
