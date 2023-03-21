@@ -34,12 +34,13 @@ const options = {
   isActive: false,
   onClose(selectedDates) {
     if (selectedDates[0] < options.defaultDate) {
-      Notiflix.Notify.failure('Please choose a date in the future');
+      Notiflix.Notify.failure('⚠️Please choose a date in the future');
       console.log(startBtnEl);
     } else {
       startBtnEl.removeAttribute(`disabled`, ``);
-      Notiflix.Notify.success('Click on "START" button');
+      Notiflix.Notify.success('✅Click on "START" button');
       console.log(selectedDates[0]);
+      defaultDate = null;
     }
   },
 };
@@ -48,28 +49,40 @@ startBtnEl.addEventListener(`click`, startTimet);
 
 let timerId = null;
 
-function startTimet() {
+function startTimet() {  
   if (options.isActive) {
     return;
   }
   options.isActive = true;
+  Notiflix.Notify.info('☝️Click on "ESC" to stop');
+  
   const timerId = setInterval(() => {
     const currentTime = new Date();
-    const finishTime = new Date(inputPickerEl.value)
+    let finishTime = new Date(inputPickerEl.value)
     time = finishTime - currentTime;
     console.log(convertMs(time));
     const { days, hours, minutes, seconds } = convertMs(time);
 
-    if (time >= 0) {        
-    daysEl.textContent = addLeadingZero(days);
-    hoursEl.textContent = addLeadingZero(hours);
-    minutesEl.textContent = addLeadingZero(minutes);
-    secondsEl.textContent = addLeadingZero(seconds);
+    if (time >= 0) {
+      daysEl.textContent = addLeadingZero(days);
+      hoursEl.textContent = addLeadingZero(hours);
+      minutesEl.textContent = addLeadingZero(minutes);
+      secondsEl.textContent = addLeadingZero(seconds);
     }
     else {
-      clearInterval(timerId);
+      clearInterval(timerId);      
+      Notiflix.Notify.success(`👌Timer is finished`);
     }
-  }, 1000);    
+  }, 1000);
+    
+  window.addEventListener(`keydown`, (e) => {
+    if (e.code === `Escape`) {
+      clearInterval(timerId);
+      startBtnEl.setAttribute(`disabled`, ``);
+      options.isActive = false;
+      Notiflix.Notify.info(`🤷‍♀️You stoped timer`);
+    }
+  })
 }
 
 function addLeadingZero(value){
