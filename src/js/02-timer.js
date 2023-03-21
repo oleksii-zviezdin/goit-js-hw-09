@@ -40,7 +40,6 @@ const options = {
       startBtnEl.removeAttribute(`disabled`, ``);
       Notiflix.Notify.success('✅Click on "START" button');
       console.log(selectedDates[0]);
-      defaultDate = null;
     }
   },
 };
