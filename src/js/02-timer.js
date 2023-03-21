@@ -58,7 +58,7 @@ function startTimet() {
   const timerId = setInterval(() => {
     const currentTime = new Date();
     let finishTime = new Date(inputPickerEl.value)
-    time = finishTime - currentTime;
+    const time = finishTime - currentTime;
     console.log(convertMs(time));
     const { days, hours, minutes, seconds } = convertMs(time);
 
