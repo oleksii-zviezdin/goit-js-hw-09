@@ -53,7 +53,8 @@ function startTimet() {
     return;
   }
   options.isActive = true;
-  Notiflix.Notify.info('☝️Click on "ESC" to stop');
+  setTimeout(() =>{Notiflix.Notify.info('☝️Click on "ESC" to stop')}, 3000)
+;
   
   const timerId = setInterval(() => {
     const currentTime = new Date();
@@ -71,6 +72,7 @@ function startTimet() {
     else {
       clearInterval(timerId);      
       Notiflix.Notify.success(`👌Timer is finished`);
+      options.isActive = false;
     }
   }, 1000);
     
@@ -80,6 +82,7 @@ function startTimet() {
       startBtnEl.setAttribute(`disabled`, ``);
       options.isActive = false;
       Notiflix.Notify.info(`🤷‍♀️You stoped timer`);
+      setTimeout(() =>{Notiflix.Notify.info(`Select new date`)}, 2000)
     }
   })
 }
