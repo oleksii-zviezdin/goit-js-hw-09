@@ -22,12 +22,17 @@ function checkInputValue() {
   inputStepValue = Number(inputStapEl.value);
   inputDelayValue = Number(inputDelayEl.value);
   inputAmountValue = Number(inputAmountEl.value);
-  if (inputDelayValue && inputStepValue && inputAmountValue) {
+  if (inputDelayValue && inputStepValue && inputAmountValue){
     createPromiseBntEl.removeAttribute("disabled");
   }
 }
 
 function handleCreatePromiseBnt(e) {
+  if (inputDelayValue <= 0 || inputStepValue <= 0 || inputAmountValue <= 0) {
+    Notiflix.Notify.info(`Value can't be negative or zero`);
+    createPromiseBntEl.setAttribute(`disabled`, ``);
+    return
+  }
   e.preventDefault();  
   inputStepValue = Number(inputStapEl.value);
   inputDelayValue = Number(inputDelayEl.value);
