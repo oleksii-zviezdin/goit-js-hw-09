@@ -31,7 +31,6 @@ const options = {
   time_24hr: true,
   defaultDate: new Date(),
   minuteIncrement: 1,
-  isActive: false,
   onClose(selectedDates) {
     if (selectedDates[0] < options.defaultDate) {
       Notiflix.Notify.failure('⚠️Please choose a date in the future');
@@ -49,10 +48,8 @@ startBtnEl.addEventListener(`click`, startTimet);
 let timerId = null;
 
 function startTimet() {  
-  if (options.isActive) {
-    return;
-  }
   options.isActive = true;
+  startBtnEl.setAttribute(`disabled`, ``);
   setTimeout(() =>{Notiflix.Notify.info('☝️Click on "ESC" to stop')}, 3000)
 ;
   
@@ -72,7 +69,6 @@ function startTimet() {
     else {
       clearInterval(timerId);      
       Notiflix.Notify.success(`👌Timer is finished`);
-      options.isActive = false;
     }
   }, 1000);
     
