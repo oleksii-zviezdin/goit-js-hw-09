@@ -15,12 +15,8 @@ function checkInputValue() {
   } 
 }
 
-function handleCreatePromiseBnt(e) {
-  if (Number(formEl.elements.delay.value) <= 0 || Number(formEl.elements.step.value) <= 0 && Number(formEl.elements.amount.value) <= 0) {
-    Notiflix.Notify.info(`Value can't be negative or zero`);
-  }
-
-  e.preventDefault();
+function handleCreatePromiseBnt(e){
+    e.preventDefault();
   let delayPlus = Number(formEl.elements.delay.value);
 
   for (let i = 1; i <= Number(formEl.elements.amount.value); i += 1) {
