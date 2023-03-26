@@ -2,51 +2,33 @@ import Notiflix from 'notiflix';
 import throttle from 'lodash.throttle'
 
 const createPromiseBntEl = document.querySelector(`button[type="submit"]`);
-const inputDelayEl = document.querySelector(`input[name="delay"]`);
-const inputStapEl = document.querySelector(`input[name="step"]`);
-const inputAmountEl = document.querySelector(`input[name="amount"]`)
 const formEl = document.querySelector(`.form`);
 
 createPromiseBntEl.setAttribute(`disabled`, ``);
 
-inputDelayEl.addEventListener(`input`, throttle(checkInputValue, 1000));
-inputStapEl.addEventListener(`input`, throttle(checkInputValue, 1000));
-inputAmountEl.addEventListener(`input`, throttle(checkInputValue, 1000));
-createPromiseBntEl.addEventListener(`click`, handleCreatePromiseBnt);
-
-let inputStepValue;
-let inputDelayValue;
-let inputAmountValue;
+formEl.addEventListener(`input`, throttle(checkInputValue, 1000));
+formEl.addEventListener(`submit`, handleCreatePromiseBnt);
 
 function checkInputValue() {
-  inputStepValue = Number(inputStapEl.value);
-  inputDelayValue = Number(inputDelayEl.value);
-  inputAmountValue = Number(inputAmountEl.value);
-  if (inputDelayValue && inputStepValue && inputAmountValue){
+  if (Number(formEl.elements.delay.value) && Number(formEl.elements.step.value) &&  Number(formEl.elements.amount.value)){
     createPromiseBntEl.removeAttribute("disabled");
-  }
+  } 
 }
 
 function handleCreatePromiseBnt(e) {
-  if (inputDelayValue <= 0 || inputStepValue <= 0 || inputAmountValue <= 0) {
+  if (Number(formEl.elements.delay.value) <= 0 || Number(formEl.elements.step.value) <= 0 && Number(formEl.elements.amount.value) <= 0) {
     Notiflix.Notify.info(`Value can't be negative or zero`);
-    createPromiseBntEl.setAttribute(`disabled`, ``);
-    return
   }
-  e.preventDefault();  
-  inputStepValue = Number(inputStapEl.value);
-  inputDelayValue = Number(inputDelayEl.value);
-  inputAmountValue = Number(inputAmountEl.value);
-  console.log(inputDelayValue);
-  console.log(inputStepValue);
-  let delayPlus = inputDelayValue;
 
-  for (let i = 1; i <= inputAmountValue; i += 1) {
+  e.preventDefault();
+  let delayPlus = Number(formEl.elements.delay.value);
+
+  for (let i = 1; i <= Number(formEl.elements.amount.value); i += 1) {
     console.log(delayPlus);
     createPromise(i, delayPlus).
       then(resolve => Notiflix.Notify.success(resolve)).
       catch(reject => Notiflix.Notify.failure(reject));
-      delayPlus += inputStepValue;
+      delayPlus += Number(formEl.elements.step.value);
   }
   formEl.reset();
 }
